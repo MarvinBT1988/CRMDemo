@@ -17,7 +17,7 @@ namespace CRM.API.Endpoints
                 };
                 var customers = new List<Customer>();
                 int countRow = 0;
-                if (customerDTO.SendRowCount == 1)
+                if (customerDTO.SendRowCount == 2)
                 {
                     customers = await customerDAL.Search(customer, skip: customerDTO.Skip, take: customerDTO.Take);
                     if (customers.Count > 0)
