@@ -1,5 +1,6 @@
 ﻿using CRM.API.Models.EN;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 
 namespace CRM.API.Models.DAL
 {
@@ -54,6 +55,7 @@ namespace CRM.API.Models.DAL
            return await Query(customer).CountAsync();
         }
         public async Task<List<Customer>> Search(Customer customer, int take=10, int skip=0) {
+            take = take == 0 ? 10 : take;
             var query = Query(customer);
             query = query.OrderByDescending(s=> s.Id).Skip(skip).Take(take);
             return await query.ToListAsync();

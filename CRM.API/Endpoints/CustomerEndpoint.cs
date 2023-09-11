@@ -8,7 +8,7 @@ namespace CRM.API.Endpoints
     {
         public static void AddCustomerEndpoints(this WebApplication app)
         {
-            app.MapGet("/customer", async (SearchQueryCustomerDTO customerDTO, CustomerDAL customerDAL) =>
+            app.MapPost("/customer/search", async ( SearchQueryCustomerDTO customerDTO, CustomerDAL customerDAL) =>
             {
                 var customer = new Customer
                 {
@@ -19,10 +19,9 @@ namespace CRM.API.Endpoints
                 int countRow = 0;
                 if (customerDTO.SendRowCount == 1)
                 {
-                    var customers_task= customerDAL.Search(customer, skip: customerDTO.Skip, take: customerDTO.Take);
-                    var countRow_task = customerDAL.CountSearch(customer);
-                    customers = await customers_task;
-                    countRow =await countRow_task;
+                    customers = await customerDAL.Search(customer, skip: customerDTO.Skip, take: customerDTO.Take);
+                    if (customers.Count > 0)
+                        countRow = await customerDAL.CountSearch(customer);
                 }
                 else
                     customers = await customerDAL.Search(customer, skip: customerDTO.Skip, take: customerDTO.Take);
@@ -68,7 +67,7 @@ namespace CRM.API.Endpoints
                     LastName = customerDTO.LastName,
                     Address = customerDTO.Address
                 };               
-                int result= await customerDAL.Create(customer);
+                int result= await customerDAL.Create(customer);               
                 if (result != 0)
                     return Results.Ok(result);
                 else
