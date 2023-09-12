@@ -1,0 +1,82 @@
+﻿@page "/customer-list"
+@using CRM.DTOs.CustomerDTOs
+@using System.Text.Json;
+@using Microsoft.AspNetCore.Components;
+@using Microsoft.AspNetCore.Components.Forms;
+<h3>Buscar Cliente</h3>
+
+<EditForm Model="searchQueryCustomerDTO" OnValidSubmit="Search">
+    <div class="form-group">
+        <label for="Name">Nombre:</label>
+        <InputText class="form-control" id="Name" @bind-Value="searchQueryCustomerDTO.Name_Like" />
+    </div>
+    <div class="form-group">
+        <label for="LastName">Apellido:</label>
+        <InputText class="form-control" id="LastName" @bind-Value="searchQueryCustomerDTO.LastName_Like" />
+    </div>
+    <br />
+    <button type="submit" class="btn btn-primary">Buscar</button>
+    <NavLink href="/create-customer" class="btn btn-primary">Ir a crear</NavLink>
+</EditForm>
+<br />
+<h3>Lista de Clientes</h3>
+@if (CustomersList != null && CustomersList.Count > 0)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Dirección</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var customer in CustomersList)
+            {
+                <tr>
+                    <td>@customer.Name</td>
+                    <td>@customer.LastName</td>
+                    <td>@customer.Address</td>
+                    <td>
+                        <button class="btn btn-primary" @onclick="() => EditCustomer(customer.Id)">Editar</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+@code {
+    private HttpClient _httpClientCRMAPI;
+    [Inject]
+    private IHttpClientFactory httpClientFactory { get; set; }
+    [Inject]
+    NavigationManager Navigation {get;set;}
+    private List<SearchResultCustomerDTO.CustomerDTO> CustomersList { get; set; }
+    private SearchQueryCustomerDTO searchQueryCustomerDTO { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        _httpClientCRMAPI = httpClientFactory.CreateClient("CRMAPI");
+        searchQueryCustomerDTO = new SearchQueryCustomerDTO();
+        await Search();
+    }
+    private async Task Search()
+    {
+        var result = new SearchResultCustomerDTO();
+        var response = await _httpClientCRMAPI.PostAsJsonAsync("/customer/search", searchQueryCustomerDTO);
+        if (response.IsSuccessStatusCode)
+        {
+            var responseBody = await response.Content.ReadAsStringAsync();
+            result = JsonSerializer.Deserialize<SearchResultCustomerDTO>(responseBody,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            result = result != null ? result : new SearchResultCustomerDTO();
+            CustomersList = result.Data;
+        }
+    }
+
+    private void EditCustomer(int customerId)
+    {
+        // Puedes navegar al formulario de edición pasando el parámetro (customerId) como parte de la URL
+        // Por ejemplo, asumiendo que tu formulario de edición se llama "EditCustomer" y usa "customerId" como parámetro
+        Navigation.NavigateTo($"/edit-customer/{customerId}");
+    }
+}

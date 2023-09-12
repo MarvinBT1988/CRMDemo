@@ -1,14 +1,14 @@
-﻿@page "/create-customer"
+﻿@page "/edit-customer/{Id:int}"
 
-@using CRM.DTOs.CustomerDTOs
-@using Microsoft.AspNetCore.Components.Forms
-@using System.ComponentModel.DataAnnotations
+@using CRM.DTOs.CustomerDTOs;
+@using Microsoft.AspNetCore.Components.Forms;
+@using System.ComponentModel.DataAnnotations;
 
 @if (isSuccess == false && isError==false)
 {
-    <h3>Crear Nuevo Cliente</h3>
+    <h3>Modificar Cliente</h3>
 
-    <EditForm Model="customer" OnValidSubmit="HandleValidSubmit">
+   @*  <EditForm Model="customer" OnValidSubmit="HandleValidSubmit">
         <DataAnnotationsValidator />
         <div class="form-group">
             <label for="Name">Nombre:</label>
@@ -25,22 +25,24 @@
             <InputText class="form-control" id="Address" @bind-Value="customer.Address" />
             <ValidationMessage For="() => customer.Address" />
         </div>
-        <button type="submit" class="btn btn-primary">Guardar</button>
-    </EditForm>
+        <button type="submit" class="btn btn-primary">Modificar</button>
+    </EditForm> *@
 }else if (isSuccess)
 {
-    customer = new CreateCustomerDTO();
+    customer = new EditCustomerDTO();
     isError = false;
-    <p class="alert alert-success">Cliente creado con éxito.</p>
-    <button type="button" @onclick="HandleIrACrear">Ir a crear</button>
+    <p class="alert alert-success">Cliente se modifico con éxito.</p>
+    <button type="button" @onclick="HandleIrACrear">Ir a ver clientes</button>
 }
 else if (isError)
 {
-    <p class="alert alert-success">sucedio un error al intentar registrar.</p>
+    <p class="alert alert-success">sucedio un error al intentar modificar.</p>
 }
 
 @code {
-    private CreateCustomerDTO customer = new CreateCustomerDTO();
+    [Parameter]
+    public int Id { get; set; }
+    private EditCustomerDTO customer = new EditCustomerDTO();
     private bool isSuccess = false;
     private bool isError = false;
     private HttpClient _httpClientCRMAPI;
@@ -50,7 +52,7 @@ else if (isError)
     {
         _httpClientCRMAPI = httpClientFactory.CreateClient("CRMAPI");
         var result = 0;
-        var response = await _httpClientCRMAPI.PostAsJsonAsync("/customer", customer);
+        var response = await _httpClientCRMAPI.PutAsJsonAsync("/customer/"+customer.Id, customer);
         if (response.IsSuccessStatusCode)
         {
             var responseBody = await response.Content.ReadAsStringAsync();
