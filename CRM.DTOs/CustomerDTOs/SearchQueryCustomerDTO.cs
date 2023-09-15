@@ -10,7 +10,7 @@ namespace CRM.DTOs.CustomerDTOs
         public string? LastName_Like { get; set; }
         [Display(Name = "Pagina")]
         public int Skip { get; set; }
-        [Display(Name = "Cantidad Registros")]
+        [Display(Name = "CantReg X Pagina")]
         public int Take { get; set; }
         /// <summary>
         /// 1 = No se cuenta los resultados de la busqueda

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -7,23 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="Pages\Customer\EditCustomer.razor" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\CRM.DTOs\CRM.DTOs.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <UpToDateCheckInput Remove="Pages\Customer\EditCustomer.razor" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <_ContentIncludedByDefault Remove="Pages\Customer\EditCustomer.razor" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="Pages\Customer\EditCustomer.razor" />
   </ItemGroup>
 
 </Project>

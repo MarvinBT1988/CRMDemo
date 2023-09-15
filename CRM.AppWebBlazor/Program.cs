@@ -1,6 +1,4 @@
 using CRM.AppWebBlazor.Data;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
 
 var builder = WebApplication.CreateBuilder(args);
 

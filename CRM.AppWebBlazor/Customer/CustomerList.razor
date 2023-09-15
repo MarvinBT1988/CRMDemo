@@ -1,5 +1,5 @@
 ﻿@page "/customer-list"
-@using CRM.DTOs.CustomerDTOs
+@using CRM.DTOs.CustomerDTOs;
 @using System.Text.Json;
 @using Microsoft.AspNetCore.Components;
 @using Microsoft.AspNetCore.Components.Forms;
@@ -50,7 +50,7 @@
     [Inject]
     private IHttpClientFactory httpClientFactory { get; set; }
     [Inject]
-    NavigationManager Navigation {get;set;}
+    NavigationManager Navigation { get; set; }
     private List<SearchResultCustomerDTO.CustomerDTO> CustomersList { get; set; }
     private SearchQueryCustomerDTO searchQueryCustomerDTO { get; set; }
     protected override async Task OnInitializedAsync()
@@ -75,8 +75,8 @@
 
     private void EditCustomer(int customerId)
     {
-        // Puedes navegar al formulario de edición pasando el parámetro (customerId) como parte de la URL
-        // Por ejemplo, asumiendo que tu formulario de edición se llama "EditCustomer" y usa "customerId" como parámetro
         Navigation.NavigateTo($"/edit-customer/{customerId}");
+        //Navigation.NavigateTo("/edit");
+        // detail-customer
     }
 }
