@@ -61,22 +61,29 @@ else if (isError)
 }
 
 @code {
+    // Inyección de dependencia de CustomerService para acceder a sus métodos
     [Inject]
     CustomerService customerService { get; set; }
-    CreateCustomerDTO customer = new CreateCustomerDTO();
-    bool isSuccess = false;
-    bool isError = false;   
+
+    // Creación de una instancia de CreateCustomerDTO para crear un cliente
+    CreateCustomerDTO customer = new CreateCustomerDTO(); 
+    bool isSuccess = false; // Variable para rastrear si la operación fue exitosa
+    bool isError = false;  // Variable para rastrear si se produjo un error
+
     private async Task Create()
-    {        
-        int result =  await customerService.Create(customer);      
-        if (result != 0)        
-            isSuccess = true;        
-        else        
-            isError = true;        
+    {
+        // Llama al método Create de CustomerService para crear un cliente
+        int result = await customerService.Create(customer); 
+        if (result != 0) // Comprueba si el resultado de la operación es diferente de 0 (indicando éxito)
+            isSuccess = true; // Establece isSuccess en true si la operación fue exitosa
+        else
+            isError = true; // Establece isError en true si la operación resultó en un error
     }
+
     private void GoCreate()
     {
-        isSuccess = false;
-        isError = false;
+        isSuccess = false; // Restablece isSuccess a false, utilizado para limpiar el estado de éxito
+        isError = false;  // Restablece isError a false, utilizado para limpiar el estado de error
     }
+
 }

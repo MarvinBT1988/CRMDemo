@@ -59,25 +59,46 @@ else if (isError)
 }
 
 @code {    
+    // Declaración de un parámetro llamado "Id" que puede ser pasado al componente
     [Parameter]
     public int Id { get; set; }
+
+    // Inyección de dependencia de CustomerService para 
+    // acceder a los servicios relacionados con los clientes
     [Inject]
     CustomerService customerService { get; set; }
+
+    // Declaración e inicialización de un objeto "customer"
+    //  para almacenar los detalles del cliente
     EditCustomerDTO customer = new EditCustomerDTO();
+
+    // Declaración de variables booleanas para manejar el estado de éxito y error
     bool isSuccess = false;
     bool isError = false;
 
+    // Método que se llama cuando se inicializa el componente
     protected override async Task OnInitializedAsync()
     {
+        // Realiza una llamada asincrónica para obtener los 
+        // detalles del cliente por su Id
         var customerDetail = await customerService.GetById(Id);
+
+        // Inicializa el objeto "customer" con los detalles del cliente obtenidos
         customer = new EditCustomerDTO(customerDetail);
-    }   
-    private async Task Edit()
-    {       
-        int result = await customerService.Edit(customer);       
-        if (result != 0)        
-            isSuccess = true;        
-        else        
-            isError = true;        
     }
+
+    // Método para editar el cliente
+    private async Task Edit()
+    {
+        // Realiza una llamada asincrónica para editar la información del cliente
+        int result = await customerService.Edit(customer);
+
+        // Verifica si el resultado de la edición es diferente 
+        // de cero (éxito) o igual a cero (error)
+        if (result != 0)
+            isSuccess = true;
+        else
+            isError = true;
+    }
+
 }

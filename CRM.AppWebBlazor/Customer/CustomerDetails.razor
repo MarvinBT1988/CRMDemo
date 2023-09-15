@@ -35,14 +35,28 @@
     </div>
 
 @code {
+    // Parámetro para recibir el ID del cliente desde la llamada al componente
     [Parameter]
-    public int Id { get; set; }
+    public int Id { get; set; } 
+
+    // Inyección de dependencia de CustomerService para acceder a sus métodos
     [Inject]
-    CustomerService customerService { get; set; }
+    CustomerService customerService { get; set; } 
+
+    // Creación de una instancia de GetIdResultCustomerDTO para almacenar los datos del cliente
     GetIdResultCustomerDTO customer = new GetIdResultCustomerDTO();
 
+    /*
+         *  se utiliza para realizar inicializaciones o tareas
+         *  cuando se carga una página o componente de Blazor.
+         * Este método se llama automáticamente cuando el componente se está inicializando
+         *  antes de que se muestre en la interfaz de usuario.
+         */
     protected override async Task OnInitializedAsync()
     {
-        customer = await customerService.GetById(Id);        
-    }  
+        // En el momento de inicialización del componente, llama al método GetById de
+        //  CustomerService para obtener los datos del cliente con el ID proporcionado
+        customer = await customerService.GetById(Id); 
+    }
+
 }

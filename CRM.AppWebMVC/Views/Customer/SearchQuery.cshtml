@@ -1,9 +1,9 @@
-﻿@model SearchQueryCustomerDTO
-@{
-    int totalRegistros = (int)ViewBag.CountRow;
-    //int.TryParse(ViewBag.CountRow,out totalRegistros); // Debes implementar esta función para obtener el total de registros.
-    // Calcular el número total de páginas
-    int totalPaginas = (int)Math.Ceiling((double)totalRegistros / Model.Take);
+﻿@model SearchQueryCustomerDTO // Declara el modelo esperado para esta vista
+@{   
+    // Obtiene el valor de CountRow de la ViewBag
+    int totalRegistros = (int)ViewBag.CountRow; 
+    // Calcula el número total de páginas
+    int totalPaginas = (int)Math.Ceiling((double)totalRegistros / Model.Take); 
 }
 <h4>Buscar Cliente</h4>
 <hr />
