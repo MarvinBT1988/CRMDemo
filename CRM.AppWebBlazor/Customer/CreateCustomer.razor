@@ -4,11 +4,13 @@
 @using Microsoft.AspNetCore.Components.Forms
 @using System.ComponentModel.DataAnnotations
 @using Microsoft.AspNetCore.Components;
+@using CRM.AppWebBlazor.Data;
+
 @if (isSuccess == false && isError == false)
 {
     <h3>Crear Nuevo Cliente</h3>
 
-    <EditForm Model="customer" OnValidSubmit="HandleValidSubmit">
+    <EditForm Model="customer" OnValidSubmit="Create">
         <DataAnnotationsValidator />
         <div class="row">
             <div class="col-4">
@@ -39,7 +41,7 @@
         <div class="row">
             <div class="col-12">
                 <button type="submit" class="btn btn-primary">Guardar</button>
-                <NavLink href="/customer-list" class="btn btn-primary">Cancelar</NavLink>
+                <NavLink href="/customer-list" class="btn btn-secondary">Cancelar</NavLink>
             </div>
         </div>
     </EditForm>
@@ -49,42 +51,30 @@ else if (isSuccess)
     customer = new CreateCustomerDTO();
     isError = false;
     <p class="alert alert-success">Cliente creado con éxito.</p>
-    <button type="button" @onclick="HandleIrACrear" class="btn btn-primary">Ir a crear</button>
+    <button type="button" @onclick="GoCreate" class="btn btn-primary">Ir a crear</button>
     <NavLink href="/customer-list" class="btn btn-primary">Ir a buscar clientes</NavLink>
 }
 else if (isError)
 {
     <p class="alert alert-success">sucedio un error al intentar registrar.</p>
+    <NavLink href="/customer-list" class="btn btn-primary">Aceptar</NavLink>
 }
 
 @code {
-    private CreateCustomerDTO customer = new CreateCustomerDTO();
-    private bool isSuccess = false;
-    private bool isError = false;
-    private HttpClient _httpClientCRMAPI;
     [Inject]
-    private IHttpClientFactory httpClientFactory { get; set; }
-    private async Task HandleValidSubmit()
-    {
-        _httpClientCRMAPI = httpClientFactory.CreateClient("CRMAPI");
-        var result = 0;
-        var response = await _httpClientCRMAPI.PostAsJsonAsync("/customer", customer);
-        if (response.IsSuccessStatusCode)
-        {
-            var responseBody = await response.Content.ReadAsStringAsync();
-            if (int.TryParse(responseBody, out result) == false)
-                result = 0;
-        }
-        if (result != 0)
-        {
-            isSuccess = true;
-        }
-        else
-        {
-            isError = true;
-        }
+    CustomerService customerService { get; set; }
+    CreateCustomerDTO customer = new CreateCustomerDTO();
+    bool isSuccess = false;
+    bool isError = false;   
+    private async Task Create()
+    {        
+        int result =  await customerService.Create(customer);      
+        if (result != 0)        
+            isSuccess = true;        
+        else        
+            isError = true;        
     }
-    private void HandleIrACrear()
+    private void GoCreate()
     {
         isSuccess = false;
         isError = false;

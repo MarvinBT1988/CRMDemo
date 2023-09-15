@@ -3,24 +3,42 @@
 @using System.Text.Json;
 @using Microsoft.AspNetCore.Components;
 @using Microsoft.AspNetCore.Components.Forms;
-<h3>Buscar Cliente</h3>
+@using CRM.AppWebBlazor.Data;
 
-<EditForm Model="searchQueryCustomerDTO" OnValidSubmit="Search">
-    <div class="form-group">
-        <label for="Name">Nombre:</label>
-        <InputText class="form-control" id="Name" @bind-Value="searchQueryCustomerDTO.Name_Like" />
-    </div>
-    <div class="form-group">
-        <label for="LastName">Apellido:</label>
-        <InputText class="form-control" id="LastName" @bind-Value="searchQueryCustomerDTO.LastName_Like" />
+<h3>Buscar Cliente</h3>
+<EditForm Model="searchQuery" OnValidSubmit="Search">
+    <div class="row">
+        <div class="col-3">
+            <div class="form-group">
+                <label for="Name">Nombre:</label>
+                <InputText class="form-control" @bind-Value="searchQuery.Name_Like" />
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="form-group">
+                <label for="LastName">Apellido:</label>
+                <InputText class="form-control" @bind-Value="searchQuery.LastName_Like" />
+            </div>
+        </div>
+        <div class="col-2">
+            <div class="form-group">
+                <label for="Take">CantReg X Pagina</label>
+                <select class="form-control" @bind="searchQuery.Take">
+                    @for (var i = 10; i < 1000; i += 10)
+                    {
+                        <option value="@i">@i</option>
+                    }
+                </select>
+            </div>
+        </div>
     </div>
     <br />
     <button type="submit" class="btn btn-primary">Buscar</button>
-    <NavLink href="/create-customer" class="btn btn-primary">Ir a crear</NavLink>
+    <NavLink href="/create-customer" class="btn btn-secondary">Ir a crear</NavLink>
 </EditForm>
 <br />
 <h3>Lista de Clientes</h3>
-@if (CustomersList != null && CustomersList.Count > 0)
+@if (searchResult != null && searchResult.Data != null && searchResult.Data.Count > 0)
 {
     <table class="table">
         <thead>
@@ -28,17 +46,20 @@
                 <th>Nombre</th>
                 <th>Apellido</th>
                 <th>Dirección</th>
+                <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var customer in CustomersList)
+            @foreach (var customer in searchResult.Data)
             {
                 <tr>
                     <td>@customer.Name</td>
                     <td>@customer.LastName</td>
                     <td>@customer.Address</td>
                     <td>
-                        <button class="btn btn-primary" @onclick="() => EditCustomer(customer.Id)">Editar</button>
+                        <button class="btn btn-dark" @onclick="() => GoEdit(customer.Id)">Editar</button>
+                        <button class="btn btn-info" @onclick="() => GoDetails(customer.Id)">Ver</button>
+                        <button class="btn btn-danger" @onclick="() => GoDelete(customer.Id)">Eliminar</button>
                     </td>
                 </tr>
             }
@@ -46,37 +67,31 @@
     </table>
 }
 @code {
-    private HttpClient _httpClientCRMAPI;
     [Inject]
-    private IHttpClientFactory httpClientFactory { get; set; }
+    CustomerService customerService { get; set; }
     [Inject]
-    NavigationManager Navigation { get; set; }
-    private List<SearchResultCustomerDTO.CustomerDTO> CustomersList { get; set; }
-    private SearchQueryCustomerDTO searchQueryCustomerDTO { get; set; }
+    NavigationManager navigation { get; set; }   
+    SearchResultCustomerDTO searchResult = new SearchResultCustomerDTO();
+    SearchQueryCustomerDTO searchQuery = new SearchQueryCustomerDTO { Take = 10 };
+
     protected override async Task OnInitializedAsync()
-    {
-        _httpClientCRMAPI = httpClientFactory.CreateClient("CRMAPI");
-        searchQueryCustomerDTO = new SearchQueryCustomerDTO();
+    {           
         await Search();
     }
     private async Task Search()
     {
-        var result = new SearchResultCustomerDTO();
-        var response = await _httpClientCRMAPI.PostAsJsonAsync("/customer/search", searchQueryCustomerDTO);
-        if (response.IsSuccessStatusCode)
-        {
-            var responseBody = await response.Content.ReadAsStringAsync();
-            result = JsonSerializer.Deserialize<SearchResultCustomerDTO>(responseBody,
-                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-            result = result != null ? result : new SearchResultCustomerDTO();
-            CustomersList = result.Data;
-        }
+        searchResult = await customerService.Search(searchQuery);
     }
-
-    private void EditCustomer(int customerId)
+    private void GoEdit(int customerId)
     {
-        Navigation.NavigateTo($"/edit-customer/{customerId}");
-        //Navigation.NavigateTo("/edit");
-        // detail-customer
+        navigation.NavigateTo($"/edit-customer/{customerId}");
+    }
+    private void GoDetails(int customerId)
+    {
+        navigation.NavigateTo($"/customer-details/{customerId}");
+    }
+    private void GoDelete(int customerId)
+    {
+        navigation.NavigateTo($"/delete-customer/{customerId}");
     }
 }
