@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using CRM.DTOs.CustomerDTOs;
 using System.Text.Json;
-using System.Reflection;
 
 namespace CRM.AppWebMVC.Controllers
 {
@@ -20,13 +19,9 @@ namespace CRM.AppWebMVC.Controllers
                 searchQueryCustomerDTO.Take = 10;
             var result = new SearchResultCustomerDTO();
             var response = await _httpClientCRMAPI.PostAsJsonAsync("/customer/search",searchQueryCustomerDTO);
-            if (response.IsSuccessStatusCode)
-            {
-                var responseBody = await response.Content.ReadAsStringAsync();
-                result = JsonSerializer.Deserialize<SearchResultCustomerDTO>(responseBody,
-                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-                result = result != null ? result : new SearchResultCustomerDTO();
-            }
+            if (response.IsSuccessStatusCode)            
+                result = await response.Content.ReadFromJsonAsync<SearchResultCustomerDTO>();
+            result = result != null ? result : new SearchResultCustomerDTO();
             if (result.CountRow == 0 && searchQueryCustomerDTO.SendRowCount == 1)
                 result.CountRow = CountRow;
             ViewBag.CountRow = result.CountRow;
@@ -40,13 +35,9 @@ namespace CRM.AppWebMVC.Controllers
         {
             var result = new GetIdResultCustomerDTO();
             var response = await _httpClientCRMAPI.GetAsync("/customer/" + id);
-            if (response.IsSuccessStatusCode)
-            {
-                var responseBody = await response.Content.ReadAsStringAsync();
-                result = JsonSerializer.Deserialize<GetIdResultCustomerDTO>(responseBody,
-                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-            }
-            return View(result);
+            if (response.IsSuccessStatusCode)            
+                result = await response.Content.ReadFromJsonAsync<GetIdResultCustomerDTO>();
+            return View(result ?? new GetIdResultCustomerDTO());
         }
 
         // GET: CustomerController/Create
@@ -83,13 +74,8 @@ namespace CRM.AppWebMVC.Controllers
             var result = new GetIdResultCustomerDTO();
             var response = await _httpClientCRMAPI.GetAsync("/customer/" + id);
             if (response.IsSuccessStatusCode)
-            {
-                var responseBody = await response.Content.ReadAsStringAsync();
-                result = JsonSerializer.Deserialize<GetIdResultCustomerDTO>(responseBody,
-                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-                result=result!=null? result: new GetIdResultCustomerDTO();
-            }
-            return View(new EditCustomerDTO(result));
+                result = await response.Content.ReadFromJsonAsync<GetIdResultCustomerDTO>();
+            return View(new EditCustomerDTO(result ?? new GetIdResultCustomerDTO()));
         }
 
         // POST: CustomerController/Edit/5
@@ -120,13 +106,8 @@ namespace CRM.AppWebMVC.Controllers
             var result = new GetIdResultCustomerDTO();
             var response = await _httpClientCRMAPI.GetAsync("/customer/" + id);
             if (response.IsSuccessStatusCode)
-            {
-                var responseBody = await response.Content.ReadAsStringAsync();
-                result = JsonSerializer.Deserialize<GetIdResultCustomerDTO>(responseBody,
-                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-                result = result != null ? result : new GetIdResultCustomerDTO();
-            }
-            return View(result);
+                result = await response.Content.ReadFromJsonAsync<GetIdResultCustomerDTO>();
+            return View(result ?? new GetIdResultCustomerDTO());
         }
 
         // POST: CustomerController/Delete/5

@@ -62,8 +62,7 @@
             <nav aria-label="Page navigation example">
                 <ul class="pagination">
                     @{
-                        int skipAnte = Model.Skip > 0 ? Model.Skip + Model.Take : 0;
-                        int skipSi = Model.Skip + Model.Take;
+                        int skipAnte = Model.Skip > 0 ? Model.Skip - Model.Take : 0;                       
                         int skipMax = 0;
                     }
                     <li class="page-item"><a class="page-link" data-skip="@skipAnte" href="#" onclick="paginacion(this)">Anterior</a></li>
@@ -81,7 +80,10 @@
                         }
                         skipMax = skip;
                     }
-                    @{ skipSi = skipSi > skipMax ? skipSi - Model.Take : skipSi;}
+                    @{
+                        int skipSi = Model.Skip + Model.Take;
+                        skipSi = skipSi > skipMax ? skipSi - Model.Take : skipSi;
+                    }
                     <li class="page-item"><a class="page-link" data-skip="@skipSi" href="#" onclick="paginacion(this)">Siguiente</a></li>
                 </ul>
                 

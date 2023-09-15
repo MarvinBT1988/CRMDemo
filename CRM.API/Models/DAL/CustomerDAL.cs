@@ -1,6 +1,5 @@
 ﻿using CRM.API.Models.EN;
 using Microsoft.EntityFrameworkCore;
-using System.Diagnostics;
 
 namespace CRM.API.Models.DAL
 {
