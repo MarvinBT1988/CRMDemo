@@ -2,14 +2,16 @@
 using CRM.API.Models.EN;
 using Microsoft.EntityFrameworkCore;
 
-// Define la clase CustomerDAL que se utiliza para interactuar con los datos de los clientes en la base de datos.
+// Define la clase CustomerDAL que se utiliza para interactuar
+// con los datos de los clientes en la base de datos.
 namespace CRM.API.Models.DAL
 {
     public class CustomerDAL
     {
         readonly CRMContext _context;
 
-        // Constructor que recibe un objeto CRMContext para interactuar con la base de datos.
+        // Constructor que recibe un objeto CRMContext para
+        // interactuar con la base de datos.
         public CustomerDAL(CRMContext cRMContext)
         {
             _context = cRMContext;
