@@ -33,7 +33,7 @@ if (app.Environment.IsDevelopment())
 }
 
 // Agrega middleware para redirigir las solicitudes HTTP a HTTPS.
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 // Ejecuta la aplicación.
 app.Run();

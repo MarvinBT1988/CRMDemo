@@ -25,7 +25,7 @@ namespace CRM.AppWebMVC.Controllers
             var result = new SearchResultCustomerDTO();
 
             // Realizar una solicitud HTTP POST para buscar clientes en el servicio web
-            var response = await _httpClientCRMAPI.PostAsJsonAsync("/customer/search", searchQueryCustomerDTO);
+            var response = await _httpClientCRMAPI.PostAsJsonAsync("customer/search", searchQueryCustomerDTO);
 
             if (response.IsSuccessStatusCode)
                 result = await response.Content.ReadFromJsonAsync<SearchResultCustomerDTO>();
@@ -49,7 +49,7 @@ namespace CRM.AppWebMVC.Controllers
             var result = new GetIdResultCustomerDTO();
 
             // Realizar una solicitud HTTP GET para obtener los detalles del cliente por ID
-            var response = await _httpClientCRMAPI.GetAsync("/customer/" + id);
+            var response = await _httpClientCRMAPI.GetAsync("customer/" + id);
 
             if (response.IsSuccessStatusCode)
                 result = await response.Content.ReadFromJsonAsync<GetIdResultCustomerDTO>();
@@ -71,7 +71,7 @@ namespace CRM.AppWebMVC.Controllers
             try
             {
                 // Realizar una solicitud HTTP POST para crear un nuevo cliente
-                var response = await _httpClientCRMAPI.PostAsJsonAsync("/customer", createCustomerDTO);
+                var response = await _httpClientCRMAPI.PostAsJsonAsync("customer", createCustomerDTO);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -92,7 +92,7 @@ namespace CRM.AppWebMVC.Controllers
         public async Task<IActionResult> Edit(int id)
         {
             var result = new GetIdResultCustomerDTO();
-            var response = await _httpClientCRMAPI.GetAsync("/customer/" + id);
+            var response = await _httpClientCRMAPI.GetAsync("customer/" + id);
 
             if (response.IsSuccessStatusCode)
                 result = await response.Content.ReadFromJsonAsync<GetIdResultCustomerDTO>();
@@ -108,7 +108,7 @@ namespace CRM.AppWebMVC.Controllers
             try
             {
                 // Realizar una solicitud HTTP PUT para editar el cliente
-                var response = await _httpClientCRMAPI.PutAsJsonAsync("/customer", editCustomerDTO);
+                var response = await _httpClientCRMAPI.PutAsJsonAsync("customer", editCustomerDTO);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -129,7 +129,7 @@ namespace CRM.AppWebMVC.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             var result = new GetIdResultCustomerDTO();
-            var response = await _httpClientCRMAPI.GetAsync("/customer/" + id);
+            var response = await _httpClientCRMAPI.GetAsync("customer/" + id);
 
             if (response.IsSuccessStatusCode)
                 result = await response.Content.ReadFromJsonAsync<GetIdResultCustomerDTO>();
@@ -145,7 +145,7 @@ namespace CRM.AppWebMVC.Controllers
             try
             {
                 // Realizar una solicitud HTTP DELETE para eliminar el cliente por ID
-                var response = await _httpClientCRMAPI.DeleteAsync("/customer/" + id);
+                var response = await _httpClientCRMAPI.DeleteAsync("customer/" + id);
 
                 if (response.IsSuccessStatusCode)
                 {

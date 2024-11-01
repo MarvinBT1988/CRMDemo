@@ -15,7 +15,7 @@ namespace CRM.AppWebBlazor.Data
         // Método para buscar clientes utilizando una solicitud HTTP POST
         public async Task<SearchResultCustomerDTO> Search(SearchQueryCustomerDTO searchQueryCustomerDTO)
         {
-            var response = await _httpClientCRMAPI.PostAsJsonAsync("/customer/search", searchQueryCustomerDTO);
+            var response = await _httpClientCRMAPI.PostAsJsonAsync("customer/search", searchQueryCustomerDTO);
             if (response.IsSuccessStatusCode)
             {
                 var result = await response.Content.ReadFromJsonAsync<SearchResultCustomerDTO>();
@@ -27,7 +27,7 @@ namespace CRM.AppWebBlazor.Data
         // Método para obtener un cliente por su ID utilizando una solicitud HTTP GET
         public async Task<GetIdResultCustomerDTO> GetById(int id)
         {
-            var response = await _httpClientCRMAPI.GetAsync("/customer/" + id);
+            var response = await _httpClientCRMAPI.GetAsync("customer/" + id);
             if (response.IsSuccessStatusCode)
             {
                 var result = await response.Content.ReadFromJsonAsync<GetIdResultCustomerDTO>();
@@ -40,7 +40,7 @@ namespace CRM.AppWebBlazor.Data
         public async Task<int> Create(CreateCustomerDTO createCustomerDTO)
         {
             int result = 0;
-            var response = await _httpClientCRMAPI.PostAsJsonAsync("/customer", createCustomerDTO);
+            var response = await _httpClientCRMAPI.PostAsJsonAsync("customer", createCustomerDTO);
             if (response.IsSuccessStatusCode)
             {
                 var responseBody = await response.Content.ReadAsStringAsync();
@@ -54,7 +54,7 @@ namespace CRM.AppWebBlazor.Data
         public async Task<int> Edit(EditCustomerDTO editCustomerDTO)
         {
             int result = 0;
-            var response = await _httpClientCRMAPI.PutAsJsonAsync("/customer", editCustomerDTO);
+            var response = await _httpClientCRMAPI.PutAsJsonAsync("customer", editCustomerDTO);
             if (response.IsSuccessStatusCode)
             {
                 var responseBody = await response.Content.ReadAsStringAsync();
@@ -68,7 +68,7 @@ namespace CRM.AppWebBlazor.Data
         public async Task<int> Delete(int id)
         {
             int result = 0;
-            var response = await _httpClientCRMAPI.DeleteAsync("/customer/" + id);
+            var response = await _httpClientCRMAPI.DeleteAsync("customer/" + id);
             if (response.IsSuccessStatusCode)
             {
                 var responseBody = await response.Content.ReadAsStringAsync();

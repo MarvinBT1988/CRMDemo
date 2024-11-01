@@ -27,7 +27,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseHttpsRedirection(); // Redirige las solicitudes HTTP a HTTPS
+//app.UseHttpsRedirection(); // Redirige las solicitudes HTTP a HTTPS
 
 app.UseStaticFiles(); // Habilita el uso de archivos estáticos como CSS, JavaScript, imágenes, etc.
 
