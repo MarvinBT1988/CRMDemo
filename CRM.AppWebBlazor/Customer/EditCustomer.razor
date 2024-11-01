@@ -40,7 +40,7 @@
         <div class="row">
             <div class="col-12">
                 <button type="submit" class="btn btn-primary">Modificar</button>
-                <NavLink href="/customer-list" class="btn btn-secondary">Cancelar</NavLink>
+                <NavLink href="customer-list" class="btn btn-secondary">Cancelar</NavLink>
             </div>
         </div>
     </EditForm>
@@ -50,12 +50,12 @@ else if (isSuccess)
     customer = new EditCustomerDTO();
     isError = false;
     <p class="alert alert-success">Cliente se modifico con éxito.</p>
-    <NavLink href="/customer-list" class="btn btn-primary">Aceptar</NavLink>
+    <NavLink href="customer-list" class="btn btn-primary">Aceptar</NavLink>
 }
 else if (isError)
 {
     <p class="alert alert-error">Sucedio un error al intentar modificar. o no ha realizado ninguna modificacion al registro actual</p>
-    <NavLink href="/customer-list" class="btn btn-primary">Aceptar</NavLink>
+    <NavLink href="customer-list" class="btn btn-primary">Aceptar</NavLink>
 }
 
 @code {    

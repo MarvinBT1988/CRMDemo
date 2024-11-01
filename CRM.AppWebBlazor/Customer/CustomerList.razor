@@ -34,7 +34,7 @@
     </div>
     <br />
     <button type="submit" class="btn btn-primary">Buscar</button>
-    <NavLink href="/create-customer" class="btn btn-secondary">Ir a crear</NavLink>
+    <NavLink href="create-customer" class="btn btn-secondary">Ir a crear</NavLink>
     <br />    
 </EditForm>
 <br />
@@ -173,17 +173,17 @@
     // Métodos para navegar a las páginas de edición, detalles y eliminación
     private void GoEdit(int customerId)
     {
-        navigation.NavigateTo($"/edit-customer/{customerId}");
+        navigation.NavigateTo($"edit-customer/{customerId}");
     }
 
     private void GoDetails(int customerId)
     {
-        navigation.NavigateTo($"/customer-details/{customerId}");
+        navigation.NavigateTo($"customer-details/{customerId}");
     }
 
     private void GoDelete(int customerId)
     {
-        navigation.NavigateTo($"/delete-customer/{customerId}");
+        navigation.NavigateTo($"delete-customer/{customerId}");
     }
 
     // Método para actualizar la lista de paginación
