@@ -28,10 +28,10 @@ app.AddCustomerEndpoints();
 if (app.Environment.IsDevelopment())
 {
     // Habilita el uso de Swagger para la documentación de la API.
-    app.UseSwagger();
-    app.UseSwaggerUI();
+   
 }
-
+app.UseSwagger();
+app.UseSwaggerUI();
 // Agrega middleware para redirigir las solicitudes HTTP a HTTPS.
 //app.UseHttpsRedirection();
 
